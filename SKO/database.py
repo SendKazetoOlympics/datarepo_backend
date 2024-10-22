@@ -30,7 +30,7 @@ def upload_video():
             cursor.execute(
                 "INSERT INTO videos (id, name, start_time, camera) VALUES (gen_random_uuid(), %s, %s, %s)",
                 (
-                    'raw_data/'+data.get("name"),
+                    data.get("name"),
                     data.get("start_time"),
                     data.get("camera")
                 )
