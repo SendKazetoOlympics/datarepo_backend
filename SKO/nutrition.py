@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify, current_app
 import psycopg
 import psycopg.rows
-from database import connect_postgres
+from .database import connect_postgres
 from uuid import uuid4
 
 nutrition_service = Blueprint("nutrition", __name__)
@@ -12,22 +12,23 @@ def add_food():
         cursor = client.cursor()
         data = request.form
         same_names = cursor.execute(
-            "SELECT * FROM foods WHERE name = %s",
+            "SELECT * FROM food WHERE name = %s",
             (data.getlist("name"))
         )
-        # if same_names.rowcount > 0:
-        #     return jsonify({"message": "Food already exists"})
-        # else:
-        #     cursor.execute(
-        #         "INSERT INTO foods (id, name, calories, protein, fat, carbs) VALUES (gen_random_uuid(), %s, %s, %s, %s, %s)",
-        #         (
-        #             data.get("name"),
-        #             data.get("calories"),
-        #             data.get("protein"),
-        #             data.get("fat"),
-        #             data.get("carbs")
-        #         )
-        #     )
+        if same_names.rowcount > 0:
+            return jsonify({"message": "Food already exists"})
+        else:
+            cursor.execute(
+                "INSERT INTO food (name, portion, calories, carbs, fat, protein) VALUES (%s, %s, %s, %s, %s, %s)",
+                (
+                    data.get("name"),
+                    float(data.get("portion")),
+                    int(data.get("calories")),
+                    int(data.get("carbs")),
+                    int(data.get("fat")),
+                    int(data.get("protein"))
+                )
+            )
         return jsonify({"message": "Success"})
         
 @nutrition_service.route("/select_food_by_name", methods=["POST"])
