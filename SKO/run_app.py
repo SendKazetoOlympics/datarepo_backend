@@ -9,6 +9,7 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
 
     from . import database, webhook, minio, nutrition
+
     app.register_blueprint(database.database_service, url_prefix="/flask/database")
     app.register_blueprint(webhook.webhook_service, url_prefix="/flask/webhook")
     app.register_blueprint(minio.minio_service, url_prefix="/flask/minio")
@@ -16,8 +17,8 @@ def create_app(test_config=None):
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
-        app.config.from_pyfile('config.py', silent=True)
-        app.config['SECRET_KEY']
+        app.config.from_pyfile("config.py", silent=True)
+        app.config["SECRET_KEY"]
     else:
         # load the test config if passed in
         app.config.from_mapping(test_config)
@@ -28,13 +29,14 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    @app.route('/flask/hello')
+    @app.route("/flask/hello_test")
     def hello():
-        return 'Hello, World!'
+        return "Hello, World!"
 
     CORS(app)
 
     return app
+
 
 if __name__ == "__main__":
     app = create_app()

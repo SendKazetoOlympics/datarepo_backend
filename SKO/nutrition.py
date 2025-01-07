@@ -15,20 +15,20 @@ def add_food():
             "SELECT * FROM foods WHERE name = %s",
             (data.getlist("name"))
         )
-        if same_names.rowcount > 0:
-            return jsonify({"message": "Food already exists"})
-        else:
-            cursor.execute(
-                "INSERT INTO foods (id, name, calories, protein, fat, carbs) VALUES (gen_random_uuid(), %s, %s, %s, %s, %s)",
-                (
-                    data.get("name"),
-                    data.get("calories"),
-                    data.get("protein"),
-                    data.get("fat"),
-                    data.get("carbs")
-                )
-            )
-            return jsonify({"message": "Success"})
+        # if same_names.rowcount > 0:
+        #     return jsonify({"message": "Food already exists"})
+        # else:
+        #     cursor.execute(
+        #         "INSERT INTO foods (id, name, calories, protein, fat, carbs) VALUES (gen_random_uuid(), %s, %s, %s, %s, %s)",
+        #         (
+        #             data.get("name"),
+        #             data.get("calories"),
+        #             data.get("protein"),
+        #             data.get("fat"),
+        #             data.get("carbs")
+        #         )
+        #     )
+        return jsonify({"message": "Success"})
         
 @nutrition_service.route("/select_food_by_name", methods=["POST"])
 def select_food_by_name():
