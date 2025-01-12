@@ -11,9 +11,11 @@ def add_food():
     with connect_postgres() as client:
         cursor = client.cursor()
         data = request.form
+        print(data)
+
         same_names = cursor.execute(
             "SELECT * FROM food WHERE name = %s",
-            (data.getlist("name"))
+            (data.getlist("Name"))
         )
         if same_names.rowcount > 0:
             return jsonify({"message": "Food already exists"})
@@ -21,12 +23,12 @@ def add_food():
             cursor.execute(
                 "INSERT INTO food (name, portion, calories, carbs, fat, protein) VALUES (%s, %s, %s, %s, %s, %s)",
                 (
-                    data.get("name"),
-                    float(data.get("portion")),
-                    int(data.get("calories")),
-                    int(data.get("carbs")),
-                    int(data.get("fat")),
-                    int(data.get("protein"))
+                    data.get("Name"),
+                    float(data.get("Portion")),
+                    int(data.get("Calories")),
+                    int(data.get("Carb")),
+                    int(data.get("Fat")),
+                    int(data.get("Protein"))
                 )
             )
         return jsonify({"message": "Success"})
