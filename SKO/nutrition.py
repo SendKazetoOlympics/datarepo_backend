@@ -30,7 +30,14 @@ def add_food():
                 )
             )
         return jsonify({"message": "Success"})
-        
+
+@nutrition_service.route("/get_food_list", methods=["GET"])
+def get_food_list():
+    with connect_postgres() as client:
+        cursor = client.cursor()
+        foods = cursor.execute("SELECT * FROM food ORDER BY name")
+        return jsonify({"foods": foods.fetchall()})
+
 @nutrition_service.route("/select_food_by_name", methods=["POST"])
 def select_food_by_name():
     with connect_postgres() as client:
